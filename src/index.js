@@ -37,20 +37,8 @@ function setDelay(difficulty) {
            (() => { throw new Error("Invalid difficulty level!"); })();
 }
 
-/**
- * This function chooses a random hole from a list of holes.
- *
- * This function should select a random Hole from the list of holes.
- * 1. generate a random integer from 0 to 8 and assign it to an index variable
- * 2. get a random hole with the random index (e.g. const hole = holes[index])
- * 3. if hole === lastHole then call chooseHole(holes) again.
- * 4. if hole is not the same as the lastHole then keep track of 
- * it (lastHole = hole) and return the hole
- *
- * Example: 
- * const holes = document.querySelectorAll('.hole');
- * chooseHole(holes) //> returns one of the 9 holes that you defined
- */
+
+ //This function chooses a random hole from a list of holes.
 function chooseHole(holes) {
   let index = Math.floor(Math.random() * holes.length);
   let hole = holes[index];
@@ -152,9 +140,10 @@ function clearScore() {
 *
 */
 function updateTimer() {
-  // TODO: Write your code here.
-  // hint: this code is provided to you in the instructions.
-  
+  if (time > 0){
+    time -= 1;
+    timerDisplay.textContent = time;
+  }
   return time;
 }
 
