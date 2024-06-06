@@ -120,7 +120,7 @@ function toggleVisibility(hole){
 
 //This function increments the points global variable and updates the scoreboard.
 function updateScore() {
-  points++;
+  points += 1;
   score.textContent = points;
   return points;
 }
@@ -139,12 +139,9 @@ function clearScore() {
 * Updates the control board with the timer if time > 0
 *
 */
-function updateTimer() {
-  if (time > 0){
-    time -= 1;
-    timerDisplay.textContent = time;
-  }
-  return time;
+function startTimer() {
+  timer = setInterval(updateTimer, 1000);
+  return timer;
 }
 
 
@@ -208,11 +205,14 @@ function stopGame(){
 function startGame(){
   setDuration(10);
   showUp();
+  startTimer();
+  setEventListeners(); 
   return "game started";
 }
 
-startButton.addEventListener("click", startGame);
-
+document.addEventListener("DOMContentLoaded", function() {
+  startButton.addEventListener("click", startGame); 
+}); 
 
 // Please do not modify the code below.
 // Used for testing purposes.
