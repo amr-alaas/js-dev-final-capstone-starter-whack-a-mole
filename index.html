@@ -1,26 +1,26 @@
 <html>
   <head>
     <link rel="stylesheet" href="./src/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <h1 id="title">Whack-a-Zombie!!</h1>
-    <div>
+    <div class="scary-font">
+      <label for="difficulty">Select Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="normal">Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
       <div>
-        <div>
-          <label for="difficulty">Select Difficulty:</label>
-          <select id="difficulty">
-            <option value="easy">Easy</option>
-            <option value="normal">Normal</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
-        <h2>Click <button id="start">start</button> to play!</h2>
+        <h2 class="scary-font">Click <button id="start">start</button> to play!</h2>
       </div>
       <div>
-        <h2>score: <span id="score">0</span></h2>
+        <h2 class="scary-font">score: <span id="score">0</span></h2>
       </div>
       <div>
-          <h2><span id="timer">0</span> seconds left.</h2>
+        <h2 class="scary-font"><span id="timer" class="timer">0</span> seconds left.</h2>
       </div>
     </div>
     <div class="grid">

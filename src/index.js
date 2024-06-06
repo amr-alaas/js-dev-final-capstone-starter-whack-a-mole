@@ -3,9 +3,7 @@ const moles = document.querySelectorAll('.mole');
 const startButton = document.querySelector('#start');
 const score = document.querySelector('#score');
 const timerDisplay = document.querySelector('#timer');
-const zombiesGrowlingAudio = new Audio("https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/Group-Of-Zombies-Growling-A1-www.fesliyanstudios.com.mp3?raw=true");
-
-
+const zombiesGrowlingAudio = document.getElementById("zombiesGrowlingAudio"); // Get audio element by id
 
 let time = 0;
 let timer;
@@ -15,12 +13,6 @@ let difficulty = "hard";
 
 /**
  * Generates a random integer within a range.
- *
- * The function takes two values as parameters that limits the range 
- * of the number to be generated. For example, calling randomInteger(0,10)
- * will return a random integer between 0 and 10. Calling randomInteger(10,200)
- * will return a random integer between 10 and 200.
-
  */
 function randomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -34,58 +26,41 @@ function randomInteger(min, max) {
  * 600 and 1200.
  */
 function setDelay(difficulty) {
-  return difficulty === "easy" ? 150000 : //returns a time delay of 1,500 milliseconds
-           difficulty === "normal" ? 1000 : //returns a time delay of 1000 milliseconds
-           difficulty === "hard" ? randomInteger(600, 1200) : //returns a random time delay between 600 and 1,200.
+  return difficulty === "easy" ? 1500 :
+           difficulty === "normal" ? 1000 :
+           difficulty === "hard" ? randomInteger(600, 1200) :
            (() => { throw new Error("Invalid difficulty level!"); })();
 }
 
-
- //This function chooses a random hole from a list of holes.
+// This function chooses a random hole from a list of holes.
 function chooseHole(holes) {
   let index = Math.floor(Math.random() * holes.length);
   let hole = holes[index];
 
   if (hole === lastHole) {
-    return chooseHole(holes); //select a different hole
+    return chooseHole(holes); // Select a different hole
   } else {
-    lastHole = hole; 
+    lastHole = hole;
     return hole;
   }
 }
 
 /**
-*
-* Calls the showUp function if time > 0 and stops the game if time = 0.
-*
-* The purpose of this function is simply to determine if the game should
-* continue or stop. The game continues if there is still time `if(time > 0)`.
-* If there is still time then `showUp()` needs to be called again so that
-* it sets a different delay and a different hole. If there is no more time
-* then it should call the `stopGame()` function. The function also needs to
-* return the timeoutId if the game continues or the string "game stopped"
-* if the game is over.
-*/
+ * Calls the showUp function if time > 0 and stops the game if time = 0.
+ */
 function gameOver() {
- if (time > 0){
-  const timeoutId = showUp();
-  return timeoutId;
- }   
- else {
-  const gameStopped = stopGame();
-  return gameStopped;
- }
+  if (time > 0) {
+    const timeoutId = showUp();
+    return timeoutId;
+  } else {
+    const gameStopped = stopGame();
+    return gameStopped;
+  }
 }
 
 /**
-*
-* Calls the showAndHide() function with a specific delay and a hole.
-*
-* This function simply calls the `showAndHide` function with a specific
-* delay and hole. The function needs to call `setDelay()` and `chooseHole()`
-* to call `showAndHide(hole, delay)`.
-*
-*/
+ * Calls the showAndHide() function with a specific delay and a hole.
+ */
 function showUp() {
   let delay = setDelay(difficulty);
   const hole = chooseHole(holes);
@@ -93,44 +68,35 @@ function showUp() {
 }
 
 /**
-*
-* The purpose of this function is to show and hide the mole given
-* a delay time and the hole where the mole is hidden. The function calls
-* `toggleVisibility` to show or hide the mole. The function should return
-* the timeoutID
-*
-*/
+ * The purpose of this function is to show and hide the mole given
+ * a delay time and the hole where the mole is hidden.
+ */
 function showAndHide(hole, delay) {
-  toggleVisibility(hole); // Show the mole by adding the 'show' class
+  toggleVisibility(hole);
   const timeoutID = setTimeout(() => {
-    toggleVisibility(hole); // Hide the mole by removing the 'show' class when the timer times out
+    toggleVisibility(hole);
     gameOver();
-  }, delay); // Use the provided delay as the setTimeout delay
+  }, delay);
   return timeoutID;
 }
 
 /**
-*
-* Adds or removes the 'show' class that is defined in styles.css to 
-* a given hole. It returns the hole.
-*
-*/
-function toggleVisibility(hole){
-  hole.classList.toggle('show');  
+ * Adds or removes the 'show' class that is defined in styles.css to
+ * a given hole.
+ */
+function toggleVisibility(hole) {
+  hole.classList.toggle('show');
   return hole;
 }
 
-
-//This function increments the points global variable and updates the scoreboard.
+// This function increments the points global variable and updates the scoreboard.
 function updateScore() {
   points += 1;
   score.textContent = points;
   return points;
 }
 
-
-//This function clears the score by setting `points = 0`. It also updates
-
+// This function clears the score by setting `points = 0`.
 function clearScore() {
   points = 0;
   score.textContent = points;
@@ -138,40 +104,41 @@ function clearScore() {
 }
 
 /**
-*
-* Updates the control board with the timer if time > 0
-*
-*/
+ * Updates the control board with the timer if time > 0
+ */
 function startTimer() {
   timer = setInterval(updateTimer, 1000);
   return timer;
 }
 
-
-//Starts the timer using setInterval. For each 1000ms (1 second)
+// Starts the timer using setInterval.
 function updateTimer() {
-  if (time > 0){
+  if (time > 0) {
     time -= 1;
     timerDisplay.textContent = time;
-  } else {
-    stopAudio(zombiesGrowlingAudio);
-    clearInterval(timer); // Stop the timer
+    if (time <= 3) {
+      timerDisplay.classList.add('red'); // Add 'red' class when 3 seconds remaining or less
+    } else {
+      timerDisplay.classList.remove('red'); // Remove 'red' class if more than 3 seconds remaining
+    }
+    if (time === 0) {
+      stopAudio(zombiesGrowlingAudio); // Stop the audio
+      clearInterval(timer); // Stop the timer
+    }
   }
   return time;
 }
 
 /**
-* This is the event handler that gets called when a player
-* clicks on a mole. The setEventListeners should use this event
-* handler (e.g. mole.addEventListener('click', whack)) for each of
-* the moles.
-*/
+ * This is the event handler that gets called when a player
+ * clicks on a mole.
+ */
 function whack(event) {
   updateScore();
   return points;
 }
 
-//Adds the 'click' event listeners to the moles.
+// Adds the 'click' event listeners to the moles.
 function setEventListeners() {
   moles.forEach(mole => {
     mole.addEventListener('click', whack); // Add click event listener to each mole
@@ -180,80 +147,35 @@ function setEventListeners() {
 }
 
 /**
-*
-* This function sets the duration of the game. The time limit, in seconds,
-* that a player has to click on the sprites.
-*
-*/
+ * This function sets the duration of the game.
+ */
 function setDuration(duration) {
   time = duration;
   return time;
 }
 
 /**
-*
-* This function is called when the game is stopped. It clears the
-* timer using clearInterval. Returns "game stopped".
-*
-*/
-function stopGame(){
-  // stopAudio(song);  //optional
+ * This function is called when the game is stopped.
+ */
+function stopGame() {
   clearInterval(timer);
   clearScore();
   return "game stopped";
 }
 
 /**
-*
-* This is the function that starts the game when the `startButton`
-* is clicked.
-*
-*/
-function startGame(){
+ * This is the function that starts the game when the `startButton`
+ * is clicked.
+ */
+function startGame() {
   setDuration(10);
   showUp();
   startTimer();
-  setEventListeners(); 
-  zombiesGrowlingAudio.play();
+  setEventListeners();
+  zombiesGrowlingAudio.play(); // Start playing the audio
   return "game started";
-}
-function playAudio(audioObject) {
-  audioObject.play();
-}
-
-function loopAudio(audioObject) {
-  audioObject.loop = true;
-  playAudio(audioObject);
-}
-
-function stopAudio(audioObject) {
-  audioObject.pause();
-}
-
-function play(){
-  playAudio(zombiesGrowlingAudio);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  startButton.addEventListener("click", startGame); 
-}); 
-
-// Please do not modify the code below.
-// Used for testing purposes.
-window.randomInteger = randomInteger;
-window.chooseHole = chooseHole;
-window.setDelay = setDelay;
-window.startGame = startGame;
-window.gameOver = gameOver;
-window.showUp = showUp;
-window.holes = holes;
-window.moles = moles;
-window.showAndHide = showAndHide;
-window.points = points;
-window.updateScore = updateScore;
-window.clearScore = clearScore;
-window.whack = whack;
-window.time = time;
-window.setDuration = setDuration;
-window.toggleVisibility = toggleVisibility;
-window.setEventListeners = setEventListeners;
+  startButton.addEventListener("click", startGame);
+});
