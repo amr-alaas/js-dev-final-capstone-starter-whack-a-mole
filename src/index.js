@@ -4,6 +4,8 @@ const startButton = document.querySelector('#start');
 const score = document.querySelector('#score');
 const timerDisplay = document.querySelector('#timer');
 const zombiesGrowlingAudio = document.getElementById("zombiesGrowlingAudio"); // Get audio element by id
+const song = new Audio("https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/Group-Of-Zombies-Growling-A1-www.fesliyanstudios.com.mp3?raw=true");
+
 
 let time = 0;
 let timer;
@@ -112,8 +114,21 @@ function startTimer() {
   return timer;
 }
 
+function playAudio(audioObject) {
+  audioObject.play();
+}
+
+function loopAudio(audioObject) {
+  audioObject.loop = true;
+  playAudio(audioObject);
+}
+
 function stopAudio(audioObject) {
   audioObject.pause();
+}
+
+function play(){
+  playAudio(song);
 }
 
 // Starts the timer using setInterval.
@@ -172,12 +187,16 @@ function stopGame() {
  * is clicked.
  */
 function startGame() {
-  setDuration(10);
-  clearScore();
-  showUp();
-  startTimer();
-  setEventListeners();
+  setDuration(10); // Set the game duration
+  clearScore(); // Clear the score
+  showUp(); // Show the mole
+  startTimer(); // Start the timer
+  setEventListeners(); // Set event listeners for moles
+
+  // Reset audio and play it
+  zombiesGrowlingAudio.currentTime = 0; // Reset audio to the beginning
   zombiesGrowlingAudio.play(); // Start playing the audio
+
   return "game started";
 }
 
