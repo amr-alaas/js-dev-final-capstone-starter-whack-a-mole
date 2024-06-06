@@ -62,7 +62,8 @@ function gameOver() {
  * Calls the showAndHide() function with a specific delay and a hole.
  */
 function showUp() {
-  let delay = setDelay(difficulty);
+  const difficultyElementSelector = document.querySelector("#difficulty");
+  let delay = setDelay(difficultyElementSelector.value);
   const hole = chooseHole(holes);
   return showAndHide(hole, delay);
 }
@@ -109,6 +110,10 @@ function clearScore() {
 function startTimer() {
   timer = setInterval(updateTimer, 1000);
   return timer;
+}
+
+function stopAudio(audioObject) {
+  audioObject.pause();
 }
 
 // Starts the timer using setInterval.
@@ -159,7 +164,6 @@ function setDuration(duration) {
  */
 function stopGame() {
   clearInterval(timer);
-  clearScore();
   return "game stopped";
 }
 
@@ -169,6 +173,7 @@ function stopGame() {
  */
 function startGame() {
   setDuration(10);
+  clearScore();
   showUp();
   startTimer();
   setEventListeners();
@@ -179,3 +184,22 @@ function startGame() {
 document.addEventListener("DOMContentLoaded", function() {
   startButton.addEventListener("click", startGame);
 });
+// Please do not modify the code below.
+// Used for testing purposes.
+window.randomInteger = randomInteger;
+window.chooseHole = chooseHole;
+window.setDelay = setDelay;
+window.startGame = startGame;
+window.gameOver = gameOver;
+window.showUp = showUp;
+window.holes = holes;
+window.moles = moles;
+window.showAndHide = showAndHide;
+window.points = points;
+window.updateScore = updateScore;
+window.clearScore = clearScore;
+window.whack = whack;
+window.time = time;
+window.setDuration = setDuration;
+window.toggleVisibility = toggleVisibility;
+window.setEventListeners = setEventListeners;
