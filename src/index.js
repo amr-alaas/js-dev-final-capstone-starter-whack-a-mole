@@ -3,6 +3,9 @@ const moles = document.querySelectorAll('.mole');
 const startButton = document.querySelector('#start');
 const score = document.querySelector('#score');
 const timerDisplay = document.querySelector('#timer');
+const zombiesGrowlingAudio = new Audio("https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/Group-Of-Zombies-Growling-A1-www.fesliyanstudios.com.mp3?raw=true");
+
+
 
 let time = 0;
 let timer;
@@ -31,7 +34,7 @@ function randomInteger(min, max) {
  * 600 and 1200.
  */
 function setDelay(difficulty) {
-  return difficulty === "easy" ? 1500 : //returns a time delay of 1,500 milliseconds
+  return difficulty === "easy" ? 150000 : //returns a time delay of 1,500 milliseconds
            difficulty === "normal" ? 1000 : //returns a time delay of 1000 milliseconds
            difficulty === "hard" ? randomInteger(600, 1200) : //returns a random time delay between 600 and 1,200.
            (() => { throw new Error("Invalid difficulty level!"); })();
@@ -150,6 +153,9 @@ function updateTimer() {
   if (time > 0){
     time -= 1;
     timerDisplay.textContent = time;
+  } else {
+    stopAudio(zombiesGrowlingAudio);
+    clearInterval(timer); // Stop the timer
   }
   return time;
 }
@@ -193,6 +199,7 @@ function setDuration(duration) {
 function stopGame(){
   // stopAudio(song);  //optional
   clearInterval(timer);
+  clearScore();
   return "game stopped";
 }
 
@@ -207,7 +214,24 @@ function startGame(){
   showUp();
   startTimer();
   setEventListeners(); 
+  zombiesGrowlingAudio.play();
   return "game started";
+}
+function playAudio(audioObject) {
+  audioObject.play();
+}
+
+function loopAudio(audioObject) {
+  audioObject.loop = true;
+  playAudio(audioObject);
+}
+
+function stopAudio(audioObject) {
+  audioObject.pause();
+}
+
+function play(){
+  playAudio(zombiesGrowlingAudio);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
