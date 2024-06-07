@@ -10,7 +10,9 @@ html {
   overflow: hidden;
 }
 body {
-  cursor: url('https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/DarylKnife.png?raw=true'), auto;
+  margin: 0;
+  height: 100vh;
+  cursor: url('https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/Darylkinfe2.png?raw=true'), pointer;
 }
 
 h1 {
