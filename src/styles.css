@@ -9,6 +9,9 @@ html {
   z-index:0;
   overflow: hidden;
 }
+body {
+  cursor: url('https://github.com/amr-alaas/js-dev-final-capstone-starter-whack-a-mole/blob/main/assets/DarylKnife.png?raw=true'), auto;
+}
 
 h1 {
   text-align: center;
